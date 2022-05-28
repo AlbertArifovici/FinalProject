@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	  xsi:schemaLocation="http://www.thymeleaf.org http://www.thymeleaf.org
+  http://www.ultraq.net.nz/thymeleaf/layout http://www.ultraq.net.nz/thymeleaf/layout
+  http://www.thymeleaf.org/thymeleaf-extras-springsecurity4 http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+<meta charset="ISO-8859-1">
+<title>Property Management System</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+  <!-- Brand -->
+  <a class="navbar-brand" href="#">Property Management System</a>
+
+  <!-- Toggler/collapsibe Button -->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+	<form class="form-inline my-2 my-lg-0" form-method="post" th:action="@{/logout}">
+		<button class="btn btn-outline-danger my-2 my-sm-0 btn-sm" type="submit">Logout</button>
+	</form>
+
+	<div sec:authorize="hasRole('ROLE_ADMIN')">
+		<a th:href = "@{/users/panel}" class = "btn btn-secondary"> Users panel</a>
+		<a th:href = "@{/properties/panel}" class = "btn btn-secondary"> Properties panel</a>
+	</div>
+</nav>
+
+	<div class ="container">
+		<div class = "row">
+			<h1> List Properties </h1>
+		</div>
+		
+		<div class = "row">
+			<div class = "col-lg-3">
+				<a th:href = "@{/properties/new}" class = "btn btn-primary btn-sm mb-3"> Add Property</a>
+			</div>
+		</div>
+		<table class = "table table-striped table-bordered">
+			<thead class = "table-dark">
+				<tr>
+					<th> Property Title</th>
+					<th> Property Description</th>
+					<th> Property Price</th>
+					<th> Property Address </th>
+					<th> Actions </th>
+				</tr>
+			</thead>
+			
+			<tbody>
+				<tr th:each = "property: ${properties}">
+					<td th:text = "${property.title}"></td>
+					<td th:text = "${property.description}"></td>
+					<td th:text = "${property.price}"></td>
+					<td th:text = "${property.address}"></td>
+					<td>
+						<a th:href = "@{/properties/edit/{id}(id=${property.propertyId})}"
+						 class = "btn btn-primary">Update</a>
+						
+						<a th:href = "@{/properties/{id}(id=${property.propertyId})}"
+						 class = "btn btn-danger">Delete</a>
+					</td>
+				</tr>
+			</tbody>
+		
+		</table>
+		
+	</div>
+</body>
+</html>
